@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfDevice xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Device>
+    <ID>0</ID>
+    <Name>Mouse</Name>
+    <RichTextPath>./</RichTextPath>
+    <CreationDate>2024-03-25T14:50:37.609485+01:00</CreationDate>
+  </Device>
+</ArrayOfDevice>
