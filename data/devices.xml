@@ -2,8 +2,23 @@
 <ArrayOfDevice xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Device>
     <ID>0</ID>
-    <Name>Mouse</Name>
-    <RichTextPath>./</RichTextPath>
-    <CreationDate>2024-03-25T14:50:37.609485+01:00</CreationDate>
+    <Name>a</Name>
+    <ImagePath />
+    <RichTextPath>data/device0.rtf</RichTextPath>
+    <CreationDate>2024-03-26T16:42:37.155838+01:00</CreationDate>
+  </Device>
+  <Device>
+    <ID>2</ID>
+    <Name>c</Name>
+    <ImagePath />
+    <RichTextPath>data/device2.rtf</RichTextPath>
+    <CreationDate>2024-03-26T16:42:49.580311+01:00</CreationDate>
+  </Device>
+  <Device>
+    <ID>4</ID>
+    <Name>ikij</Name>
+    <ImagePath />
+    <RichTextPath>data/device4.rtf</RichTextPath>
+    <CreationDate>2024-03-26T16:43:21.047355+01:00</CreationDate>
   </Device>
 </ArrayOfDevice>

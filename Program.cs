@@ -8,7 +8,7 @@ namespace CMSystem
     {
         public static void Main()
         {
-            Application.Run(new LoginForm());
+            Application.Run(new TableForm());
         }
     }
 }
