@@ -15,7 +15,7 @@ namespace CMSystem
 
         public TableForm()
         {
-            this.Text = "Control Managenemt Systems";
+            this.Text = "Content Managenemt Systems";
             this.VisibleChanged += new EventHandler((o, e) => FillTable());
             this.Size = new Size(500, 300);
             SetupLayout();
@@ -105,7 +105,7 @@ namespace CMSystem
         private void SetupLayout()
         {
             this.Controls.Add(this.panel);
-            this.panel.Size = this.Size;
+            this.panel.Size = new Size(490, 300);
             this.panel.WrapContents = true;
             this.panel.FlowDirection = FlowDirection.RightToLeft;
             this.panel.Controls.Add(gridView);
@@ -178,6 +178,7 @@ namespace CMSystem
             var editFrm = new EditDeviceForm(dev);
             editFrm.Location = this.Location;
             editFrm.StartPosition = FormStartPosition.Manual;
+            editFrm.Size = new Size(425, 350);
             editFrm.FormClosing += delegate { this.Show(); };
             editFrm.Show();
             this.Hide();

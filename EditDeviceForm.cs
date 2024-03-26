@@ -9,7 +9,7 @@ namespace CMSystem
     {
         private Device device;
 
-        private TableLayoutPanel table = new TableLayoutPanel();
+        private FlowLayoutPanel table = new FlowLayoutPanel();
         private TextBox tbName = new TextBox();
         private TextBox tbPath = new TextBox();
         private Button filePickBtn = new Button();
@@ -21,7 +21,7 @@ namespace CMSystem
         public EditDeviceForm(Device dev)
         {
             this.device = dev;
-            this.Text = "Control Managenemt Systems";
+            this.Text = "Content Managenemt Systems";
             SetupLayout();
         }
 
@@ -33,66 +33,41 @@ namespace CMSystem
                 this.tbPath.Text = device.ImagePath;
                 this.rtbDescription.LoadFile(device.RichTextPath, RichTextBoxStreamType.RichText);
             }
+
             this.Controls.Add(this.table);
-            this.table.RowCount = 0;
-            this.table.ColumnCount = 1;
-            this.table.Size = new Size(400, 600);
+            this.table.Size = new Size(450, 300);
+            this.table.WrapContents = true;
+            this.table.FlowDirection = FlowDirection.LeftToRight;
 
             // Name field
-            this.tbName.Dock = DockStyle.Fill;
+            var namePanel = getNamePanel();
 
-            // Image field and browse button 
-            this.tbPath.Dock = DockStyle.Fill;
-            this.tbPath.Width = 300;
-            this.filePickBtn.Text = "Browse";
-            this.filePickBtn.Width = 70;
-            this.filePickBtn.Click +=
-              new EventHandler((o, e) => openFilePicker());
-            var pathPanel = new FlowLayoutPanel();
-            pathPanel.Margin = new Padding(0);
-            pathPanel.AutoSize = true;
-            pathPanel.WrapContents = true;
-            pathPanel.FlowDirection = FlowDirection.LeftToRight;
-            pathPanel.Controls.Add(this.tbPath);
-            pathPanel.Controls.Add(this.filePickBtn);
-
-
-            // Labels
-            var lblName = new Label();
-            var lblPath = new Label();
-            var lblDesc = new Label();
-            lblName.Text = "Name:";
-            lblPath.Text = "Image:";
-            lblDesc.Text = "Description:";
+            // Image field 
+            var imgPanel = getImagePanel();
 
             // Rich Text field
-            rtbDescription.Dock = DockStyle.Fill;
-            rtbDescription.AutoWordSelection = true;
-            rtbDescription.Font = new Font("Segoe UI", 10);
+            var richPanel = getRichTextPanel();
 
             // Save button and cancel buttons
             this.saveBtn.Text = "Save";
+            this.saveBtn.Margin = new Padding(
+                    240,
+                    saveBtn.Margin.Top,
+                    saveBtn.Margin.Right,
+                    saveBtn.Margin.Bottom
+                );
             this.cancelBtn.Text = "Cancel";
             this.saveBtn.Click += new EventHandler((o, e) => onSave());
             this.cancelBtn.Click += new EventHandler((o, e) => this.Close());
-            var savCanPanel = new FlowLayoutPanel();
-            savCanPanel.Margin = new Padding(0);
-            savCanPanel.Size = new Size(400, 35);
-            savCanPanel.WrapContents = true;
-            savCanPanel.FlowDirection = FlowDirection.LeftToRight;
-            savCanPanel.Controls.Add(saveBtn);
-            savCanPanel.Controls.Add(cancelBtn);
 
-            this.table.Controls.Add(lblName);
-            this.table.Controls.Add(tbName);
-            this.table.Controls.Add(lblPath);
-            this.table.Controls.Add(pathPanel);
-            this.table.Controls.Add(getEditingButtons());
-            this.table.Controls.Add(rtbDescription);
-            this.table.Controls.Add(savCanPanel);
+            this.table.Controls.Add(namePanel);
+            this.table.Controls.Add(imgPanel);
+            this.table.Controls.Add(richPanel);
+            this.table.Controls.Add(saveBtn);
+            this.table.Controls.Add(cancelBtn);
         }
 
-        private FlowLayoutPanel getEditingButtons()
+        private FlowLayoutPanel getEditingButtonsPanel()
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
             panel.Size = new Size(400, 35);
@@ -102,29 +77,27 @@ namespace CMSystem
             var boldBtn = new Button();
             boldBtn.Text = "B";
             boldBtn.Name = "B";
-            boldBtn.Size = new Size(30, 30);
+            boldBtn.Size = new Size(25, 25);
             boldBtn.Click += new EventHandler(onFontStyleChange);
 
             var italBtn = new Button();
             italBtn.Text = "I";
             italBtn.Name = "I";
-            italBtn.Size = new Size(30, 30);
+            italBtn.Size = new Size(25, 25);
             italBtn.Click += new EventHandler(onFontStyleChange);
 
             var undrBtn = new Button();
             undrBtn.Text = "U";
             undrBtn.Name = "U";
-            undrBtn.Size = new Size(30, 30);
+            undrBtn.Size = new Size(25, 25);
             undrBtn.Click += new EventHandler(onFontStyleChange);
 
             var colorBtn = new Button();
-            colorBtn.Text = "Change color";
-            colorBtn.Size = new Size(100, 30);
+            colorBtn.Text = "Color";
             colorBtn.Anchor = AnchorStyles.Bottom;
 
             var fontBtn = new Button();
-            fontBtn.Text = "Change font";
-            fontBtn.Size = new Size(100, 30);
+            fontBtn.Text = "Font";
             fontBtn.Anchor = AnchorStyles.Bottom;
 
             panel.Controls.Add(boldBtn);
@@ -135,6 +108,7 @@ namespace CMSystem
 
             return panel;
         }
+
         private void onFontStyleChange(object sender, EventArgs e)
         {
             var btn = sender as Button;
@@ -162,6 +136,63 @@ namespace CMSystem
 
             this.rtbDescription.SelectionFont =
               new Font(this.rtbDescription.Font, this.style);
+        }
+
+        private FlowLayoutPanel getNamePanel()
+        {
+            var lblName = new Label();
+            this.tbName.Width = 150;
+            lblName.Text = "Name";
+            lblName.Margin = new Padding(3, 0, 40, 0);
+            var namePanel = new FlowLayoutPanel();
+            namePanel.Size = new Size(150, 50);
+            namePanel.WrapContents = true;
+            namePanel.FlowDirection = FlowDirection.LeftToRight;
+            namePanel.Controls.Add(lblName);
+            namePanel.Controls.Add(this.tbName);
+            namePanel.Margin = new Padding(10);
+
+            return namePanel;
+        }
+
+        private FlowLayoutPanel getImagePanel()
+        {
+            this.tbPath.Width = 150;
+            this.filePickBtn.Text = "Browse";
+            var lblImg = new Label();
+            lblImg.Text = "Image";
+            lblImg.Margin = new Padding(3, 0, 100, 0);
+            this.filePickBtn.Width = 60;
+            this.filePickBtn.Click +=
+              new EventHandler((o, e) => openFilePicker());
+            var imgPanel = new FlowLayoutPanel();
+            imgPanel.Size = new Size(250, 50);
+            imgPanel.WrapContents = true;
+            imgPanel.FlowDirection = FlowDirection.LeftToRight;
+            imgPanel.Controls.Add(lblImg);
+            imgPanel.Controls.Add(this.tbPath);
+            imgPanel.Controls.Add(this.filePickBtn);
+            imgPanel.Margin = new Padding(10);
+
+            return imgPanel;
+        }
+
+        private FlowLayoutPanel getRichTextPanel()
+        {
+            rtbDescription.AutoWordSelection = true;
+            rtbDescription.Width = 390;
+            var lblDesc = new Label();
+            lblDesc.Text = "Description";
+            var richPanel = new FlowLayoutPanel();
+            richPanel.Size = new Size(400, 175);
+            richPanel.WrapContents = true;
+            richPanel.FlowDirection = FlowDirection.LeftToRight;
+            richPanel.Controls.Add(lblDesc);
+            richPanel.Controls.Add(getEditingButtonsPanel());
+            richPanel.Controls.Add(rtbDescription);
+            richPanel.Margin = new Padding(10);
+
+            return richPanel;
         }
 
         private void openFilePicker()
