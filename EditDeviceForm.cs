@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CMSystem
 {
@@ -29,9 +30,11 @@ namespace CMSystem
         {
             if (device != null)
             {
+                //this.rtbDescription.LoadFile(device.RichTextPath);
+                var rtf = loadRichText(device);
+                this.rtbDescription.Rtf = rtf;
                 this.tbName.Text = device.Name;
                 this.tbPath.Text = device.ImagePath;
-                this.rtbDescription.LoadFile(device.RichTextPath, RichTextBoxStreamType.RichText);
             }
 
             this.Controls.Add(this.table);
@@ -95,6 +98,7 @@ namespace CMSystem
             var colorBtn = new Button();
             colorBtn.Text = "Color";
             colorBtn.Anchor = AnchorStyles.Bottom;
+            colorBtn.Click += new EventHandler(colorSelect);
 
             var fontBtn = new Button();
             fontBtn.Text = "Font";
@@ -107,6 +111,16 @@ namespace CMSystem
             panel.Controls.Add(fontBtn);
 
             return panel;
+        }
+
+        private void colorSelect(object sender, EventArgs e)
+        {
+            var colorSelect = new ColorDialog();
+
+            if (colorSelect.ShowDialog() == DialogResult.OK)
+            {
+                this.rtbDescription.SelectionColor = colorSelect.Color;
+            }
         }
 
         private void onFontStyleChange(object sender, EventArgs e)
@@ -229,6 +243,12 @@ namespace CMSystem
             var path = DeviceService.GetInstance().GetRtfPath(d);
             rtbDescription.SaveFile(path, RichTextBoxStreamType.RichText);
             return path;
+        }
+
+        private string loadRichText(Device d)
+        {
+            var path = DeviceService.GetInstance().GetRtfPath(d);
+            return File.ReadAllText(path);
         }
     }
 }
