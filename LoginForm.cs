@@ -72,7 +72,7 @@ namespace CMSystem
             }
 
             Console.WriteLine("You are logged in!");
-            var tableFrm = new TableForm();
+            var tableFrm = new TableForm(user);
             tableFrm.Location = this.Location;
             tableFrm.StartPosition = FormStartPosition.Manual;
             tableFrm.FormClosing += delegate { this.Show(); };

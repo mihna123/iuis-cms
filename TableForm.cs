@@ -6,6 +6,8 @@ namespace CMSystem
 {
     public class TableForm : Form
     {
+
+        private User user;
         private DataGridView gridView = new DataGridView();
         private FlowLayoutPanel panel = new FlowLayoutPanel();
 
@@ -13,8 +15,9 @@ namespace CMSystem
         private Button addBtn = new Button();
         private Button goBackBtn = new Button();
 
-        public TableForm()
+        public TableForm(User u)
         {
+            this.user = u;
             this.Text = "Content Managenemt Systems";
             this.VisibleChanged += new EventHandler((o, e) => FillTable());
             this.Size = new Size(500, 300);
@@ -167,9 +170,16 @@ namespace CMSystem
             {
                 var linkVal = clickedCell.Value as LinkCellValue;
                 var dev = DeviceService.GetInstance()
-                          .GetDevices()
-                          .Find(d => d.ID == linkVal.ID);
-                OpenEditForm(dev);
+                                        .GetDevices()
+                                        .Find(d => d.ID == linkVal.ID);
+                if (this.user.Type == UserType.Admin)
+                {
+                    OpenEditForm(dev);
+                }
+                else
+                {
+                    OpenViewForm(dev);
+                }
             }
         }
 
@@ -181,6 +191,17 @@ namespace CMSystem
             editFrm.Size = new Size(425, 350);
             editFrm.FormClosing += delegate { this.Show(); };
             editFrm.Show();
+            this.Hide();
+        }
+
+        private void OpenViewForm(Device dev)
+        {
+            var viewFrm = new ViewDeviceForm(dev);
+            viewFrm.Location = this.Location;
+            viewFrm.StartPosition = FormStartPosition.Manual;
+            viewFrm.Size = new Size(425, 350);
+            viewFrm.FormClosing += delegate { this.Show(); };
+            viewFrm.Show();
             this.Hide();
         }
     }
