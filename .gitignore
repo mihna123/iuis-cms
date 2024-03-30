@@ -1,2 +1,5 @@
+#Ignore all executables
 *.exe
 
+#Ignore data files
+/data/
