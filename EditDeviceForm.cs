@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,7 @@ namespace CMSystem
         private Button saveBtn = new Button();
         private Button cancelBtn = new Button();
         private Button colorBtn = new Button();
+        private ToolStripDropDownButton toolStripDropDownButton;
 
         public EditDeviceForm(Device dev)
         {
@@ -36,6 +38,11 @@ namespace CMSystem
                 this.rtbDescription.Rtf = rtf;
                 this.tbName.Text = device.Name;
                 this.tbPath.Text = device.ImagePath;
+                this.rtbDescription.Font =
+                  new Font(rtbDescription.SelectionFont.FontFamily,
+                           12,
+                           rtbDescription.SelectionFont.Style
+                           );
             }
 
             this.Controls.Add(this.table);
@@ -103,17 +110,46 @@ namespace CMSystem
             colorBtn.Anchor = AnchorStyles.Bottom;
             colorBtn.Click += new EventHandler(colorSelect);
 
-            var fontBtn = new Button();
-            fontBtn.Text = "Font";
-            fontBtn.Anchor = AnchorStyles.Bottom;
+
+            var toolStrip = new ToolStrip();
+            toolStripDropDownButton = new ToolStripDropDownButton();
+            foreach (var fn in getAllFonts())
+            {
+                toolStripDropDownButton.DropDownItems.Add(fn);
+            }
+
+            toolStripDropDownButton.Text = rtbDescription.Font.Name;
+            toolStripDropDownButton.DropDownItemClicked += dropDownItemClicked;
+            toolStrip.Items.Add(toolStripDropDownButton);
+
 
             panel.Controls.Add(boldBtn);
             panel.Controls.Add(italBtn);
             panel.Controls.Add(undrBtn);
             panel.Controls.Add(colorBtn);
-            panel.Controls.Add(fontBtn);
+            panel.Controls.Add(toolStrip);
 
             return panel;
+        }
+
+        private void dropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            rtbDescription.Font = new Font(e.ClickedItem.Text, 12, FontStyle.Regular);
+            toolStripDropDownButton.Text = e.ClickedItem.Text;
+        }
+
+        private List<string> getAllFonts()
+        {
+            var installedFontCollection = new InstalledFontCollection();
+
+            // Get the array of FontFamily objects
+            FontFamily[] fontFamilies = installedFontCollection.Families;
+            var ret = new List<string>();
+            foreach (FontFamily font in fontFamilies)
+            {
+                ret.Add(font.Name);
+            }
+            return ret;
         }
 
         private void colorSelect(object sender, EventArgs e)
