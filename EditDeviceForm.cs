@@ -18,6 +18,7 @@ namespace CMSystem
         private FontStyle style = FontStyle.Regular;
         private Button saveBtn = new Button();
         private Button cancelBtn = new Button();
+        private Button colorBtn = new Button();
 
         public EditDeviceForm(Device dev)
         {
@@ -95,8 +96,10 @@ namespace CMSystem
             undrBtn.Size = new Size(25, 25);
             undrBtn.Click += new EventHandler(onFontStyleChange);
 
-            var colorBtn = new Button();
-            colorBtn.Text = "Color";
+            colorBtn.Size = new Size(25, 25);
+            colorBtn.BackColor = this.rtbDescription.SelectionColor;
+            colorBtn.FlatStyle = FlatStyle.Flat;
+            colorBtn.FlatAppearance.BorderSize = 3;
             colorBtn.Anchor = AnchorStyles.Bottom;
             colorBtn.Click += new EventHandler(colorSelect);
 
@@ -120,6 +123,7 @@ namespace CMSystem
             if (colorSelect.ShowDialog() == DialogResult.OK)
             {
                 this.rtbDescription.SelectionColor = colorSelect.Color;
+                colorBtn.BackColor = colorSelect.Color;
             }
         }
 
