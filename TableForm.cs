@@ -172,6 +172,18 @@ namespace CMSystem
                 ids.Add(linkVal.ID);
             }
 
+            string msg = string.Format("Are you sure you want to delete {0} items?" +
+                                           " This action cannot be undone.",
+                                                              ids.Count);
+            DialogResult result = MessageBox.Show(msg,
+                                                  "Confirm Deletion",
+                                                  MessageBoxButtons.OKCancel,
+                                                  MessageBoxIcon.Question);
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
             DeviceService.GetInstance().RemoveDevicesWithIds(ids);
             FillTable();
         }
