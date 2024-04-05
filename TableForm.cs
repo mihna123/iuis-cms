@@ -172,9 +172,9 @@ namespace CMSystem
                 ids.Add(linkVal.ID);
             }
 
-            string msg = string.Format("Are you sure you want to delete {0} items?" +
-                                           " This action cannot be undone.",
-                                                              ids.Count);
+            string msg = string.Format("Are you sure you want to delete {0} {1}?" +
+                                 " This action cannot be undone.",
+                                 ids.Count, ids.Count == 1 ? "item" : "items");
             DialogResult result = MessageBox.Show(msg,
                                                   "Confirm Deletion",
                                                   MessageBoxButtons.OKCancel,
