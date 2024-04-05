@@ -56,21 +56,34 @@ namespace CMSystem
             // Image column
             var imageColumn = new DataGridViewImageColumn();
 
-            this.gridView.Columns.Insert(0, checkboxColumn);
-            this.gridView.Columns.Insert(1, linkColumn);
-            this.gridView.Columns.Insert(3, imageColumn);
-
-            this.gridView.Columns[0].Name = "Select";
-            this.gridView.Columns[1].Name = "Name";
-            this.gridView.Columns[1].ReadOnly = true;
-            this.gridView.Columns[2].Name = "Description Path";
-            this.gridView.Columns[2].ReadOnly = true;
-            this.gridView.Columns[3].Name = "Image";
-            this.gridView.Columns[3].ReadOnly = true;
-            this.gridView.Columns[4].Name = "Creation Date";
-            this.gridView.Columns[4].ReadOnly = true;
-            this.gridView.CellContentClick += new DataGridViewCellEventHandler(CellClick);
-
+            if (this.user.Type == UserType.Admin)
+            {
+                this.gridView.Columns.Insert(0, checkboxColumn);
+                this.gridView.Columns.Insert(1, linkColumn);
+                this.gridView.Columns.Insert(3, imageColumn);
+                this.gridView.Columns[0].Name = "Select";
+                this.gridView.Columns[1].Name = "Name";
+                this.gridView.Columns[1].ReadOnly = true;
+                this.gridView.Columns[2].Name = "Description Path";
+                this.gridView.Columns[2].ReadOnly = true;
+                this.gridView.Columns[3].Name = "Image";
+                this.gridView.Columns[3].ReadOnly = true;
+                this.gridView.Columns[4].Name = "Creation Date";
+                this.gridView.Columns[4].ReadOnly = true;
+            }
+            else
+            {
+                this.gridView.Columns.Insert(0, linkColumn);
+                this.gridView.Columns.Insert(2, imageColumn);
+                this.gridView.Columns[0].Name = "Name";
+                this.gridView.Columns[0].ReadOnly = true;
+                this.gridView.Columns[1].Name = "Description Path";
+                this.gridView.Columns[1].ReadOnly = true;
+                this.gridView.Columns[2].Name = "Image";
+                this.gridView.Columns[2].ReadOnly = true;
+                this.gridView.Columns[3].Name = "Creation Date";
+                this.gridView.Columns[3].ReadOnly = true;
+            }
             FillTable();
         }
 
@@ -93,13 +106,25 @@ namespace CMSystem
                     }
                     finally
                     {
-                        this.gridView.Rows.Add(
-                            false,
-                            new LinkCellValue { DisplayValue = dev.Name, ID = dev.ID },
-                            dev.RichTextPath,
-                            img,
-                            dev.CreationDate.ToString()
-                        );
+                        if (this.user.Type == UserType.Admin)
+                        {
+                            this.gridView.Rows.Add(
+                                false,
+                                new LinkCellValue { DisplayValue = dev.Name, ID = dev.ID },
+                                dev.RichTextPath,
+                                img,
+                                dev.CreationDate.ToString()
+                            );
+                        }
+                        else
+                        {
+                            this.gridView.Rows.Add(
+                                new LinkCellValue { DisplayValue = dev.Name, ID = dev.ID },
+                                dev.RichTextPath,
+                                img,
+                                dev.CreationDate.ToString()
+                            );
+                        }
                     }
                 }
             }
@@ -117,9 +142,12 @@ namespace CMSystem
             this.removeBtn.Text = "Remove";
             this.goBackBtn.Text = "Go back";
 
+            if (this.user.Type == UserType.Admin)
+            {
+                this.panel.Controls.Add(removeBtn);
+                this.panel.Controls.Add(addBtn);
+            }
             this.panel.Controls.Add(goBackBtn);
-            this.panel.Controls.Add(removeBtn);
-            this.panel.Controls.Add(addBtn);
 
             this.addBtn.Click += new EventHandler(OnAddClick);
             this.removeBtn.Click += new EventHandler(OnRemoveClick);
