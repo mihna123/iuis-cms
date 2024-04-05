@@ -21,6 +21,7 @@ namespace CMSystem
         private Button cancelBtn = new Button();
         private Button colorBtn = new Button();
         private ToolStripDropDownButton toolStripDropDownButton;
+        private Label lbErrName = new Label();
 
         public EditDeviceForm(Device dev)
         {
@@ -46,7 +47,7 @@ namespace CMSystem
             }
 
             this.Controls.Add(this.table);
-            this.table.Size = new Size(450, 300);
+            this.table.Size = new Size(450, 500);
             this.table.WrapContents = true;
             this.table.FlowDirection = FlowDirection.LeftToRight;
 
@@ -196,14 +197,17 @@ namespace CMSystem
         {
             var lblName = new Label();
             this.tbName.Width = 150;
-            lblName.Text = "Name";
+            lblName.Text = "Name*";
             lblName.Margin = new Padding(3, 0, 40, 0);
+            lbErrName.ForeColor = Color.Red;
+            lbErrName.Width = 150;
             var namePanel = new FlowLayoutPanel();
-            namePanel.Size = new Size(150, 50);
+            namePanel.Size = new Size(160, 80);
             namePanel.WrapContents = true;
             namePanel.FlowDirection = FlowDirection.LeftToRight;
             namePanel.Controls.Add(lblName);
             namePanel.Controls.Add(this.tbName);
+            namePanel.Controls.Add(lbErrName);
             namePanel.Margin = new Padding(10);
 
             return namePanel;
@@ -265,6 +269,11 @@ namespace CMSystem
 
         private void onSave()
         {
+            if (tbName.Text == "")
+            {
+                lbErrName.Text = "You must enter the name";
+                return;
+            }
             if (device == null)
             {
                 device = new Device();
