@@ -274,6 +274,9 @@ namespace CMSystem
                 lbErrName.Text = "You must enter the name";
                 return;
             }
+            var msg = (this.device == null
+              ? "The device was successfuly added."
+              : "The device was successfuly edited.");
             if (device == null)
             {
                 device = new Device();
@@ -284,6 +287,12 @@ namespace CMSystem
             device.CreationDate = DateTime.Now;
 
             DeviceService.GetInstance().AddDevice(device);
+            MessageBox.Show(
+                msg,
+                "Success",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Information
+                );
             this.Close();
         }
 

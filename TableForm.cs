@@ -36,6 +36,7 @@ namespace CMSystem
             this.gridView.AllowUserToAddRows = false;
             this.gridView.AllowUserToResizeRows = false;
             this.gridView.AllowUserToResizeColumns = false;
+            this.gridView.CellClick += CellClick;
 
             // Checkbox column
             var checkboxColumn = new DataGridViewCheckBoxColumn();
